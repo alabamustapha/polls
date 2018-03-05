@@ -1,0 +1,14 @@
+.alert-top{
+    border-radius: 0;
+    margin-bottom: 0;
+    padding: 5px 15px;
+    text-align: center;
+}
+
+.alert-top button.close{
+    color: rgb(22, 24, 20);
+}
+
+.mb-10{
+    margin-bottom: 10px;
+}
