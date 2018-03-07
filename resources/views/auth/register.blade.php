@@ -46,7 +46,7 @@
 
                             <div class="col-md-6">
                                 <!-- <input id="vote_power" type="range" class="" name="vote_power" min="1" max="10" step="1" value="1" data-show-value="true" required> -->
-                                <input id="vote_power" data-slider-id='ex1Slider' type="text" data-slider-min="1" data-slider-max="10" data-slider-step="1" data-slider-value="1"/>
+                                <input id="vote_power" data-slider-id='ex1Slider' type="text" data-slider-min="1" data-slider-max="10" data-slider-step="1" data-slider-value="1" name="vote_power"/>
                                 @if ($errors->has('vote_power'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('vote_power') }}</strong>
