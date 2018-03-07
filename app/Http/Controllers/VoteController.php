@@ -40,7 +40,7 @@ class VoteController extends Controller
     public function store(VoteRequest $request, Poll $poll)
     {
         
-        
+        dd($request->all());
         $vote = Vote::create([
             'poll_id'    =>  $poll->id,
             'user_id'    =>  auth()->user()->id,

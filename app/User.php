@@ -58,7 +58,10 @@ class User extends Authenticatable
     }
     
     public function opinion($poll){
-        return $this->votes()->where('poll_id', $poll->id)->first()->answer == 1 ? $poll->button_one: $poll->button_two;
+        if($poll->answer == null){
+            return 'N/A';
+        }
+        return $this->votes()->where('poll_id', $poll->id)->first()->answer == 1 ? $poll->button_one : $poll->button_two;
         
     }
 }
