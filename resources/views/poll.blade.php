@@ -52,11 +52,11 @@
             @if(auth()->user()->has_vote($poll))
             <div class="progress">
                 <div class="progress-bar progress-bar-success" style="width: {{ $poll->button_one_percentage }}%">
-                    <span>{{ $poll->button_one_percentage }}%</span>
+                    <span>{{ $poll->button_one}} {{ $poll->button_one_percentage }}%</span>
                 </div>
 
                 <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: {{ $poll->button_two_percentage }}%">
-                    <span>{{ $poll->button_two_percentage }}%</span>
+                    <span>{{ $poll->button_two }} {{ $poll->button_two_percentage }}%</span>
                 </div>
             </div>
             @endif
