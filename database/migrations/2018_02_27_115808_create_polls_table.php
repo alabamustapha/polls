@@ -21,7 +21,7 @@ class CreatePollsTable extends Migration
             $table->string('button_one')->default('Yes');
             $table->string('button_two')->default('No');
             $table->text('description')->nullable();
-            $table->enum('answer', ['1', '2']);
+            $table->enum('answer', ['1', '2'])->nullable();
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });

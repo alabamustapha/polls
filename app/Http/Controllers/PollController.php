@@ -6,6 +6,8 @@ use App\Poll;
 use Illuminate\Http\Request;
 use App\Http\Requests\StorePollRequest;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\ClosePollRequest;
+use App\Setting;
 
 class PollController extends Controller
 {
@@ -16,7 +18,7 @@ class PollController extends Controller
      */
     public function index()
     {
-        $polls = Poll::with('votes')->paginate(200);
+        $polls = Poll::with('votes')->paginate(100);
         return view('polls.index', compact('polls'));
     }
 
@@ -108,11 +110,27 @@ class PollController extends Controller
      * @param  \App\Poll  $poll
      * @return \Illuminate\Http\Response
      */
-    public function toggleStatus(Request $request, Poll $poll)
+    public function closePoll(ClosePollRequest $request, Poll $poll)
     {
-        $poll->status = !$poll->status;
+        $setting = Setting::first();
+        
+            $poll->status = 0;
+            $poll_votes = $poll->votes;
+
+            foreach ($poll_votes as $vote) {
+                
+                if ($vote->vote == $poll->answer) {
+                     $vote->user->vote_power = ($vote->user->vote_power < $setting->max_vote_power) ? ++$vote->user->vote_power : $setting->max_vote_power;
+                } else {
+                $vote->user->vote_power = ($vote->user->vote_power > 1) ? --$vote->user->vote_power : 1;
+                }
+                $vote->user->save();
+
+            }
+        
         $poll->save();
-        return back()->withMessage('Vote turned ' . $poll->status == 1 ? "On" : "Off" . " successully");
+      
+        return back()->withMessage("Vote closed successully");
     }
 
     /**

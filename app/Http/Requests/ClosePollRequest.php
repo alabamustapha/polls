@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StorePollRequest extends FormRequest
+class ClosePollRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,8 @@ class StorePollRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        $poll = $this->route('poll');
+        return $poll && $this->user()->can('update', $poll) && $poll->status == 1;
     }
 
     /**
@@ -24,13 +25,7 @@ class StorePollRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required',
-            'description' => '',
-            'button_one' => 'required',
-            'button_two' => 'required',
-            'answer' => 'nullable|in:1,2',
-            'status' => '',
-            'img' => 'required|image'
+            //
         ];
     }
 }

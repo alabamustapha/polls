@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('styles')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/css/bootstrap-slider.min.css">
+@endsection
 @section('content')
 <div class="container">
     <div class="row">
@@ -39,11 +42,11 @@
                             </div>
                         </div>
                         <div class="form-group{{ $errors->has('vote_power') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Experience Level(1-10)</label>
+                            <label for="vote_power" class="col-md-4 control-label">Experience Level(1-10)</label>
 
                             <div class="col-md-6">
-                                <input id="password" type="range" class="" name="vote_power" min="1" max="10" step="1" value="1" data-show-value="true" required>
-
+                                <!-- <input id="vote_power" type="range" class="" name="vote_power" min="1" max="10" step="1" value="1" data-show-value="true" required> -->
+                                <input id="vote_power" data-slider-id='ex1Slider' type="text" data-slider-min="1" data-slider-max="10" data-slider-step="1" data-slider-value="1"/>
                                 @if ($errors->has('vote_power'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('vote_power') }}</strong>
@@ -88,4 +91,18 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/bootstrap-slider.min.js"></script>
+
+<script>
+
+    $(document).ready(function() {
+        $("#vote_power").slider({
+            tooltip: 'always'
+        });
+    });
+
+</script>
 @endsection

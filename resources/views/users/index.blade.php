@@ -1,5 +1,13 @@
 @extends('layouts.app')
 
+@section('styles')
+
+<link href="{{ asset('css/datatables.min.css') }}">
+<link href="{{ asset('css/datatables.bootstrap.min.css') }}">
+
+
+@endsection
+
 @section('content')
 <div class="container">
     <div class="row">
@@ -10,7 +18,7 @@
                 <div class="panel-heading">Registered Users</div>
 
                 <div class="panel-body">
-                     <table class="table table-striped">
+                     <table class="table table-striped" id="users">
                         <thead>
                             <tr>
                                 <td>S/N</td>
@@ -50,6 +58,12 @@
                             @endforeach
                         </tbody>
                      </table>
+
+                     <div class="row">
+                        <div class="col-md-12 text-center">
+                            {{ $users->links() }}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -57,4 +71,20 @@
     </div>
     
 </div>
+@endsection
+
+@section('scripts')
+
+    <script src="{{ asset('js/datatables.min.js') }}"></script>
+
+    <script>
+    $(document).ready(function() {
+     
+        $('table#users').DataTable( {
+                pageLength: 50,
+        });
+
+    });
+ </script>   
+
 @endsection

@@ -39,7 +39,7 @@ class VoteController extends Controller
      */
     public function store(VoteRequest $request, Poll $poll)
     {
-        $setting = Setting::first();
+        
         
         $vote = Vote::create([
             'poll_id'    =>  $poll->id,
@@ -48,14 +48,7 @@ class VoteController extends Controller
             'vote'       =>  $request->vote,
         ]);
 
-        if($vote->vote == $poll->answer){
-            auth()->user()->vote_power =   (auth()->user()->vote_power < $setting->max_vote_power) ? ++auth()->user()->vote_power : $setting->max_vote_power;
-        }else{
-            auth()->user()->vote_power = (auth()->user()->vote_power > 1) ? --auth()->user()->vote_power : 1;
-        }
-
-        auth()->user()->save();
-
+        
         // event(new UserVoteForPoll($poll));
         broadcast(new UserVoteForPoll($poll))->toOthers();
         return back()->with('message', 'Thank you for voting');
