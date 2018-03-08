@@ -1,15 +1,21 @@
 @extends('layouts.app')
 
 @section('styles')
- <script src="https://js.pusher.com/4.1/pusher.min.js"></script>
+<script src="https://js.pusher.com/4.1/pusher.min.js"></script>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css">
+ 
 @endsection
 @section('content')
+
+
 <div class="container">
     <div class="row">
         
         <div class="col-md-offset-4 col-md-5">
             <div class="thumbnail">
-                <img  src="{{ asset('storage/' . $poll->img) }}">
+                <a class="test-popup-link" href="{{ asset('storage/' . $poll->img) }}" data-toggle="lightbox">
+                    <img  src="{{ asset('storage/' . $poll->img) }}">
+                </a>
                 <!-- <img  src="{{ asset('img/vote.png') }}"> -->
                 <div class="caption">
                     <h3>{{ $poll->title }}</h3>
@@ -69,11 +75,14 @@
 
 @section('scripts')
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.min.js"></script>
+
 <script>
 
-    Echo.channel('orders')
-        .listen('OrderShipped', (e) => {
-            console.log(e.order.name);
-    });
+    $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+                event.preventDefault();
+                $(this).ekkoLightbox({alwaysShowClose: true});
+            });
 
+</script>
 @endsection
