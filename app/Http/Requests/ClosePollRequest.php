@@ -14,7 +14,7 @@ class ClosePollRequest extends FormRequest
     public function authorize()
     {
         $poll = $this->route('poll');
-        return $poll && $this->user()->can('update', $poll) && $poll->status == 1;
+        return $poll && $this->user()->can('update', $poll) && $poll->status == 1 && $poll->answer != null;
     }
 
     /**

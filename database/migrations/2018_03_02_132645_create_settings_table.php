@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use App\Setting;
 
 class CreateSettingsTable extends Migration
 {
@@ -19,6 +20,10 @@ class CreateSettingsTable extends Migration
             $table->tinyInteger('new_user_activation')->default(1);
             $table->timestamps();
         });
+
+        
+        Setting::create([]);
+        
     }
 
     /**

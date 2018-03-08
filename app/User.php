@@ -34,7 +34,7 @@ class User extends Authenticatable
     public function getVotesWonAttribute(){
         $count = 0;
         foreach ($this->votes as $vote) {
-            if($vote->vote == $vote->poll->answer){
+            if($vote->poll->answer && ($vote->vote == $vote->poll->answer)){
                 $count++;
             }
         }
@@ -43,7 +43,7 @@ class User extends Authenticatable
     public function getVotesLoseAttribute(){
         $count = 0;
         foreach ($this->votes as $vote) {
-            if ($vote->vote != $vote->poll->answer) {
+            if ($vote->poll->answer != null && ($vote->vote != $vote->poll->answer)) {
                 $count++;
             }
         }
@@ -58,10 +58,10 @@ class User extends Authenticatable
     }
     
     public function opinion($poll){
-        if($poll->answer == null){
-            return 'N/A';
-        }
-        return $this->votes()->where('poll_id', $poll->id)->first()->answer == 1 ? $poll->button_one : $poll->button_two;
+        // if($poll->answer == null){
+        //     return 'N/A';
+        // }
+        return $this->votes()->where('poll_id', $poll->id)->first()->vote == 1 ? $poll->button_one : $poll->button_two;
         
     }
 }

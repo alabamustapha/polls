@@ -40,7 +40,7 @@ class VoteController extends Controller
     public function store(VoteRequest $request, Poll $poll)
     {
         
-        dd($request->all());
+        
         $vote = Vote::create([
             'poll_id'    =>  $poll->id,
             'user_id'    =>  auth()->user()->id,
@@ -49,7 +49,7 @@ class VoteController extends Controller
         ]);
 
         
-        // event(new UserVoteForPoll($poll));
+        //event(new UserVoteForPoll($poll));
         broadcast(new UserVoteForPoll($poll))->toOthers();
         return back()->with('message', 'Thank you for voting');
     }

@@ -114,14 +114,16 @@ class PollController extends Controller
     {
         $setting = Setting::first();
         
+        
             $poll->status = 0;
             $poll_votes = $poll->votes;
 
             foreach ($poll_votes as $vote) {
                 
                 if ($vote->vote == $poll->answer) {
-                     $vote->user->vote_power = ($vote->user->vote_power < $setting->max_vote_power) ? ++$vote->user->vote_power : $setting->max_vote_power;
+                    $vote->user->vote_power = ($vote->user->vote_power < $setting->max_vote_power) ? ++$vote->user->vote_power : $setting->max_vote_power;
                 } else {
+
                 $vote->user->vote_power = ($vote->user->vote_power > 1) ? --$vote->user->vote_power : 1;
                 }
                 $vote->user->save();
