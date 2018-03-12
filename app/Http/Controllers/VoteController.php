@@ -50,7 +50,7 @@ class VoteController extends Controller
 
         
         //event(new UserVoteForPoll($poll));
-        broadcast(new UserVoteForPoll($poll))->toOthers();
+        // broadcast(new UserVoteForPoll($poll))->toOthers();
         return back()->with('message', 'Thank you for voting');
     }
 

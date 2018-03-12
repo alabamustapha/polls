@@ -31,6 +31,7 @@ Route::group(['middleware' => ['auth', 'admin']], function(){
     Route::get('admin/settings', 'SettingController@index')->name('setting');
     Route::put('admin/settings', 'SettingController@update')->name('update_setting');
     Route::put('admin/poll/{poll}', 'PollController@update')->name('update_poll');
+    Route::get('/admin/polls/{poll}/stats', 'PollController@stats')->name('get_poll_stats');
     Route::put('admin/poll/{poll}/close_poll', 'PollController@closePoll')->name('close_poll');
     Route::delete('admin/poll/{poll}/delete', 'PollController@destroy')->name('delete_poll');
 });

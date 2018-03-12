@@ -68,6 +68,24 @@ class PollController extends Controller
     {
         return view('polls.edit', compact('poll'));
     }
+    
+    /**
+     * Get poll stats
+     *
+     * @param  \App\Poll  $poll
+     * @return \Illuminate\Http\Response
+     */
+    public function stats(Poll $poll)
+    {
+        return [
+            'button_one_percentage' => $poll->button_one_percentage,
+            'button_two_percentage' => $poll->button_two_percentage,
+            'button_one' => $poll->button_one,
+            'button_two' => $poll->button_two,
+            'votes_count' => $poll->votes()->count(),
+        ];
+
+    }
 
     /**
      * Update the specified resource in storage.

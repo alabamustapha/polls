@@ -54,7 +54,7 @@
 <script src="{{ asset('js/morris/raphael-2.1.0.min.js') }}"></script>
 <script src="{{ asset('js/morris/morris.js') }}"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
 
 $(function() {
@@ -77,44 +77,76 @@ toastr.options = {
   "hideMethod": "fadeOut"
 }
   
-
-
-
 var button_one = {!! json_encode($poll->button_one) !!};
 var button_two = {!! json_encode($poll->button_two) !!};
 var pollId = {!! json_encode($poll->id) !!};
+var pollSlug = {!! json_encode($poll->slug) !!};
+var votes_count = {!! json_encode($poll->votes()->count()) !!};
 
     
-   morris = Morris.Donut({
-        element: 'morris-donut-chart',
-        data: [
-                { label: button_one, value: {!! json_encode($poll->button_one_percentage) !!} },
-                { label: button_two, value: {!! json_encode($poll->button_two_percentage) !!} } 
-            ],
-        resize: true,
-        colors: ['#3097d1', '#31708f'],
-    });
+morris = Morris.Donut({
+    element: 'morris-donut-chart',
+    data: [
+            { label: button_one, value: {!! json_encode($poll->button_one_percentage) !!} },
+            { label: button_two, value: {!! json_encode($poll->button_two_percentage) !!} } 
+        ],
+    resize: true,
+    colors: ['#3097d1', '#31708f'],
+});
 
+
+
+setInterval(function(){ 
     
-
-var channel = `poll.` + pollId;
-Echo.channel(channel)
-    .listen('UserVoteForPoll', (e) => {
-
-
-        $("div.progress > div#button_one_progress").attr("style", "width: " + e.button_one_percentage + "%;");
-        $("div.progress > div#button_one_progress > span").html(e.button_one + " " + e.button_one_percentage + "%;");
-        $("div.progress > div#button_two_progress").attr("style", "width: " + e.button_two_percentage + "%;");
-        $("div.progress > div#button_two_progress > span").html(e.button_two + " " + e.button_two_percentage + "%;");
+    
+    axios.get('/admin/polls/' + pollSlug + '/stats')
+    .then(function (response) {
+        
+        if(response.data.votes_count > votes_count){
+        
+        $("div.progress > div#button_one_progress").attr("style", "width: " + response.data.button_one_percentage + "%;");
+        $("div.progress > div#button_one_progress > span").html(response.data.button_one + " " + response.data.button_one_percentage + "%;");
+        $("div.progress > div#button_two_progress").attr("style", "width: " + response.data.button_two_percentage + "%;");
+        $("div.progress > div#button_two_progress > span").html(response.data.button_two + " " + response.data.button_two_percentage + "%;");
         
         morris.setData([
-            {label: e.button_one, value: e.button_one_percentage},
-            {label: e.button_two, value: e.button_two_percentage}
+            {label: response.data.button_one, value: response.data.button_one_percentage},
+            {label: response.data.button_two, value: response.data.button_two_percentage}
         ]);
         
-        toastr.info(e.username + " Voted for " + e.opinion);            
+        toastr.info("New votes");   
+        votes_count = response.data.votes_count;
+        }
 
+    })
+    .catch(function (error) {
+        console.log(error);
     });
+
+
+}, 
+
+
+3000);
+
+
+// Echo.channel(channel)
+//     .listen('UserVoteForPoll', (e) => {
+
+
+//         $("div.progress > div#button_one_progress").attr("style", "width: " + e.button_one_percentage + "%;");
+//         $("div.progress > div#button_one_progress > span").html(e.button_one + " " + e.button_one_percentage + "%;");
+//         $("div.progress > div#button_two_progress").attr("style", "width: " + e.button_two_percentage + "%;");
+//         $("div.progress > div#button_two_progress > span").html(e.button_two + " " + e.button_two_percentage + "%;");
+        
+//         morris.setData([
+//             {label: e.button_one, value: e.button_one_percentage},
+//             {label: e.button_two, value: e.button_two_percentage}
+//         ]);
+        
+//         toastr.info(e.username + " Voted for " + e.opinion);            
+
+//     });
 
 
 });
